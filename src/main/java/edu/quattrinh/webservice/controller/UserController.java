@@ -4,6 +4,7 @@ import edu.quattrinh.webservice.dto.request.UserCreationRequest;
 import edu.quattrinh.webservice.dto.request.UserUpdateRequest;
 import edu.quattrinh.webservice.entity.User;
 import edu.quattrinh.webservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    User createUser(@RequestBody UserCreationRequest request) {
+    User createUser(@Valid @RequestBody UserCreationRequest request) {
         return userService.createUser(request);
     }
 
