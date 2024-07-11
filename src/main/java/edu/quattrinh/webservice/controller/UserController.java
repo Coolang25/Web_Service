@@ -1,5 +1,6 @@
 package edu.quattrinh.webservice.controller;
 
+import edu.quattrinh.webservice.dto.request.ApiResponse;
 import edu.quattrinh.webservice.dto.request.UserCreationRequest;
 import edu.quattrinh.webservice.dto.request.UserUpdateRequest;
 import edu.quattrinh.webservice.entity.User;
@@ -17,8 +18,11 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    User createUser(@Valid @RequestBody UserCreationRequest request) {
-        return userService.createUser(request);
+    ApiResponse<User> createUser(@Valid @RequestBody UserCreationRequest request) {
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(request));
+
+        return apiResponse;
     }
 
     @GetMapping

@@ -3,6 +3,8 @@ package edu.quattrinh.webservice.service;
 import edu.quattrinh.webservice.dto.request.UserCreationRequest;
 import edu.quattrinh.webservice.dto.request.UserUpdateRequest;
 import edu.quattrinh.webservice.entity.User;
+import edu.quattrinh.webservice.exception.AppException;
+import edu.quattrinh.webservice.exception.ErrorCode;
 import edu.quattrinh.webservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ public class UserService {
         User user = new User();
 
         if(userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("User existed");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
