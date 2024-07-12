@@ -1,23 +1,17 @@
-package edu.quattrinh.webservice.dto.response;
+package edu.quattrinh.webservice.dto.request;
 
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String id;
-    String username;
-    String firstName;
-    String lastName;
-    LocalDate dob;
-    Set<RoleResponse> roles;
-
+public class PermissionRequest {
+    String name;
+    String description;
 }

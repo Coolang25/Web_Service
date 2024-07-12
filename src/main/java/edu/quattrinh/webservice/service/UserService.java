@@ -8,6 +8,7 @@ import edu.quattrinh.webservice.enums.Role;
 import edu.quattrinh.webservice.exception.AppException;
 import edu.quattrinh.webservice.exception.ErrorCode;
 import edu.quattrinh.webservice.mapper.UserMapper;
+import edu.quattrinh.webservice.repository.RoleRepository;
 import edu.quattrinh.webservice.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
         if(userRepository.existsByUsername(request.getUsername())) {
@@ -41,15 +43,15 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-
-        user.setRoles(roles);
+//        HashSet<String> roles = new HashSet<>();
+//        roles.add(Role.USER.name());
+//        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority(APPROVE_POST)")
     public List<UserResponse> getUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
@@ -74,6 +76,10 @@ public class UserService {
                 new RuntimeException("User not found"));
 
         userMapper.updateUser(user, request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
