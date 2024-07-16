@@ -8,6 +8,7 @@ import com.nimbusds.jwt.SignedJWT;
 import edu.quattrinh.webservice.dto.request.AuthenticationRequest;
 import edu.quattrinh.webservice.dto.request.IntrospectRequest;
 import edu.quattrinh.webservice.dto.request.LogoutRequest;
+import edu.quattrinh.webservice.dto.request.RefreshRequest;
 import edu.quattrinh.webservice.dto.response.AuthenticationResponse;
 import edu.quattrinh.webservice.dto.response.IntrospectResponse;
 import edu.quattrinh.webservice.entity.InvalidatedToken;
@@ -106,6 +107,31 @@ public class AuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         return signedJWT;
+    }
+
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(request.getToken());
+
+        var jit = signedJWT.getJWTClaimsSet().getJWTID();
+        var expireTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jit)
+                .expiryTime(expireTime)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        var username = signedJWT.getJWTClaimsSet().getSubject();
+
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
     }
 
     private String generateToken(User user) {

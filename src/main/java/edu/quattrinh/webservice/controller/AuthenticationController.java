@@ -1,10 +1,7 @@
 package edu.quattrinh.webservice.controller;
 
 import com.nimbusds.jose.JOSEException;
-import edu.quattrinh.webservice.dto.request.ApiResponse;
-import edu.quattrinh.webservice.dto.request.AuthenticationRequest;
-import edu.quattrinh.webservice.dto.request.IntrospectRequest;
-import edu.quattrinh.webservice.dto.request.LogoutRequest;
+import edu.quattrinh.webservice.dto.request.*;
 import edu.quattrinh.webservice.dto.response.AuthenticationResponse;
 import edu.quattrinh.webservice.dto.response.IntrospectResponse;
 import edu.quattrinh.webservice.service.AuthenticationService;
@@ -44,6 +41,14 @@ public class AuthenticationController {
     ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder()
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> refresh(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(result)
                 .build();
     }
 }
