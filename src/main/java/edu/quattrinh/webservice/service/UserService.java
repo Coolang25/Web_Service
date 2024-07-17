@@ -10,6 +10,7 @@ import edu.quattrinh.webservice.exception.ErrorCode;
 import edu.quattrinh.webservice.mapper.UserMapper;
 import edu.quattrinh.webservice.repository.RoleRepository;
 import edu.quattrinh.webservice.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
