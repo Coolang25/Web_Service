@@ -1,11 +1,8 @@
 package edu.quattrinh.webservice.service;
 
-import edu.quattrinh.webservice.dto.request.UserCreationRequest;
-import edu.quattrinh.webservice.dto.response.UserResponse;
-import edu.quattrinh.webservice.entity.User;
-import edu.quattrinh.webservice.exception.AppException;
-import edu.quattrinh.webservice.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +13,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import edu.quattrinh.webservice.dto.request.UserCreationRequest;
+import edu.quattrinh.webservice.dto.response.UserResponse;
+import edu.quattrinh.webservice.entity.User;
+import edu.quattrinh.webservice.exception.AppException;
+import edu.quattrinh.webservice.repository.UserRepository;
 
 @SpringBootTest
 @TestPropertySource("/test.properties")
@@ -28,6 +28,7 @@ public class UserServiceTest {
 
     @MockBean
     private UserRepository userRepository;
+
     private UserCreationRequest request;
     private UserResponse response;
     private LocalDate dob;
@@ -46,13 +47,13 @@ public class UserServiceTest {
                 .dob(dob)
                 .build();
 
-//        response = UserResponse.builder()
-//                .id("sagagagwegwegwe")
-//                .username("quattrinh")
-//                .firstName("Quat")
-//                .lastName("Trinh")
-//                .dob(dob)
-//                .build();
+        //        response = UserResponse.builder()
+        //                .id("sagagagwegwegwe")
+        //                .username("quattrinh")
+        //                .firstName("Quat")
+        //                .lastName("Trinh")
+        //                .dob(dob)
+        //                .build();
 
         user = User.builder()
                 .id("sagagagwegwegwe")
@@ -61,7 +62,6 @@ public class UserServiceTest {
                 .lastName("Trinh")
                 .dob(dob)
                 .build();
-
     }
 
     @Test
@@ -84,11 +84,11 @@ public class UserServiceTest {
         Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
 
         // WHEN
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(AppException.class, () -> userService.createUser(request));
+        var exception = org.junit.jupiter.api.Assertions.assertThrows(
+                AppException.class, () -> userService.createUser(request));
 
         // THEN
-        Assertions.assertThat(exception.getErrorCode().getCode())
-                .isEqualTo(1002);
+        Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1002);
     }
 
     @Test
@@ -103,7 +103,6 @@ public class UserServiceTest {
         // THEN
         Assertions.assertThat(response.getUsername()).isEqualTo("quattrinh");
         Assertions.assertThat(response.getId()).isEqualTo("sagagagwegwegwe");
-
     }
 
     @Test
@@ -113,14 +112,10 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUsername(Mockito.anyString())).thenReturn(Optional.ofNullable(null));
 
         // WHEN
-        var exception = org.junit.jupiter.api.Assertions.assertThrows(AppException.class,
-                () -> userService.getMyInfo());
+        var exception =
+                org.junit.jupiter.api.Assertions.assertThrows(AppException.class, () -> userService.getMyInfo());
 
         // THEN
         Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1005);
-
     }
-
-
-
 }

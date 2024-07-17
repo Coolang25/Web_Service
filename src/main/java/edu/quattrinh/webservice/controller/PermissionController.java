@@ -1,5 +1,9 @@
 package edu.quattrinh.webservice.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
 import edu.quattrinh.webservice.dto.request.ApiResponse;
 import edu.quattrinh.webservice.dto.request.PermissionRequest;
 import edu.quattrinh.webservice.dto.response.PermissionResponse;
@@ -8,10 +12,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/permissions")
@@ -38,8 +38,6 @@ public class PermissionController {
     @DeleteMapping("/{permission}")
     ApiResponse<Void> delete(@PathVariable String permission) {
         permissionService.delete(permission);
-        return ApiResponse.<Void>builder()
-                .build();
+        return ApiResponse.<Void>builder().build();
     }
-
 }

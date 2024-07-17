@@ -1,21 +1,21 @@
 package edu.quattrinh.webservice.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
 import edu.quattrinh.webservice.dto.request.ApiResponse;
 import edu.quattrinh.webservice.dto.request.UserCreationRequest;
 import edu.quattrinh.webservice.dto.request.UserUpdateRequest;
 import edu.quattrinh.webservice.dto.response.UserResponse;
-import edu.quattrinh.webservice.entity.User;
 import edu.quattrinh.webservice.service.UserService;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")

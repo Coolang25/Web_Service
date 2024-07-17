@@ -1,11 +1,13 @@
 package edu.quattrinh.webservice.dto.request;
 
-import edu.quattrinh.webservice.validator.DobConstraint;
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Size;
+
+import edu.quattrinh.webservice.validator.DobConstraint;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +16,10 @@ import java.time.LocalDate;
 public class UserCreationRequest {
     @Size(min = 3, message = "INVALID_USERNAME")
     String username;
+
     @Size(min = 8, message = "INVALID_PASSWORD")
     String password;
+
     String firstName;
     String lastName;
 
